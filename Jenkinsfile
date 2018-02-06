@@ -1,4 +1,4 @@
-node('jenkins-agent-nodejs-1') {
+node() {
   
   try{
 
@@ -9,7 +9,7 @@ node('jenkins-agent-nodejs-1') {
     
     stage('Initialize') {
         echo 'Initializing...'
-        def node = tool name: 'NodeJS-8.9', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
+        def node = tool name: 'nodejs-8.9.4', type: 'jenkins.plugins.nodejs.tools.NodeJSInstallation'
         env.PATH = "${node}/bin:${env.PATH}"
     }
 
@@ -25,6 +25,7 @@ node('jenkins-agent-nodejs-1') {
             sh 'node -v'
             sh 'npm -v'
         }
+
         stage('Build') {
             echo 'Building Dependency...'
             sh 'npm install'
@@ -32,32 +33,28 @@ node('jenkins-agent-nodejs-1') {
         stage('Testing'){
             echo 'Testing...'
             sh 'npm test'
-            sh 'npm run bdd'
         }
-        
-	    // stage('Build In Openshift'){
-        //     echo 'Build In Openshift...'
-        //     openshiftBuild(namespace: 'demoplaycourt', buildConfig: 'todo-apps-api', showBuildLogs: 'true')
-        // }
 	
     }finally{
-        stage('Code Coverage'){
-            junit 'junit.xml'
-            step([$class: 'CukedoctorPublisher', featuresDir: '', format: 'HTML', hideFeaturesSection: false, hideScenarioKeyword: false, hideStepTime: false, hideSummary: false, hideTags: false, numbered: true, sectAnchors: true, title: 'Living Documentation', toc: 'RIGHT'])
-        }
-        stage('SonarQube analysis') {
-            def scannerHome = tool 'SonarQube Scanner';
-            withSonarQubeEnv('SonarQube') {
-            sh "${scannerHome}/bin/sonar-scanner"
+        stage('Reporting') {
+            junit ' **/*.xml'
         }
 
+        stage('SonarQube analysis') {
+        
+            def scannerHome = tool 'sonarqube-scanner';
+            withSonarQubeEnv('sonarqube') {
+            sh "${scannerHome}/bin/sonar-scanner"
+            }
+        }
+
+    
     }
     
-  }
+  
 
   }catch(e){
 
     throw e;
   }
 }
-
