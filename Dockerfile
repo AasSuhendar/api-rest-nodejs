@@ -15,7 +15,8 @@ ADD . /usr/src/app
 
 # update node_module, and change permission
 RUN rm -rf node_modules \
-  && mv /usr/src/node_modules /usr/src/app/ 
+  && mv /usr/src/node_modules /usr/src/app/ \
+  && chmod -R 775 logs
 
 # expose port
 EXPOSE 3000
