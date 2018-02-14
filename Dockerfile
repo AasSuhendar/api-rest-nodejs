@@ -16,7 +16,7 @@ ADD . /usr/src/app
 # update node_module, and change permission
 RUN rm -rf node_modules \
   && mv /usr/src/node_modules /usr/src/app/ \
-  && mkdir logs
+  && mkdir logs \
   && chmod -R 775 logs
 
 # expose port
