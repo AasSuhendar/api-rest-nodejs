@@ -33,11 +33,13 @@ node() {
         stage('Testing'){
             echo 'Testing...'
             sh 'npm test'
+	    sh 'npm run bdd'
         }
 	
     }finally{
         stage('Reporting') {
             junit ' **/*.xml'
+	    step([$class: 'CukedoctorPublisher', featuresDir: '', format: 'HTML', hideFeaturesSection: false, hideScenarioKeyword: false, hideStepTime: false, hideSummary: false, hideTags: false, numbered: true, sectAnchors: true, title: 'Living Documentation', toc: 'RIGHT'])
         }
 
         stage('SonarQube analysis') {
