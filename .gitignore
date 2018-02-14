@@ -1,15 +1,22 @@
-# Coverage directory used by tools like istanbul
+# ignore Coverage directory used by tools like istanbul
 coverage
 
 # Dependency directory
 node_modules
 
-# Debug log from npm
+# Debug log from npm or other logs
 npm-debug.log
+*.log
 
-# junit file
-junit.xml
+# ignore xml file
+*.xml
+
+# ignore cucumber.json
 cucumber.json
-#idea
+
+# idea
 .idea
 *.iml
+
+# Env file
+.env
