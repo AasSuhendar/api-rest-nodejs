@@ -1,6 +1,11 @@
 const winston = require('winston')
 winston.emitErrs = true
+var fs = require('fs')
+var dir = './logs'
 
+if (!fs.existsSync(dir)) {
+  fs.mkdirSync(dir)
+}
 const logger = new winston.Logger({
   transports: [
     new winston.transports.File({
