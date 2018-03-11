@@ -7,6 +7,7 @@ var mongooseConf = require('./helper/mongooseConf')
 var loggerFile = require('./config/logger')
 var index = require('./routes/index')
 var todos = require('./routes/todos')
+var upload = require('./routes/upload')
 
 var app = express()
 var conDB = new mongooseConf(app)
@@ -23,6 +24,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/', index)
 app.use('/api/todo-list', todos)
+app.use('/api/upload', upload)
 
 // catch 404 and forward to error handler
 app.use(function (req, res) {

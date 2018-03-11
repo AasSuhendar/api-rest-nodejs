@@ -20,3 +20,5 @@ cucumber.json
 
 # Env file
 .env
+
+public
