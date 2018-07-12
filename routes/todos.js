@@ -2,9 +2,7 @@ var express = require('express')
 var router = express.Router()
 var ToDoList = require('../apps/controllers/ToDo-controller')
 
-router.get('/', function (req, res) {
-  ToDoList.getAllTodos(req, res)
-})
+router.get('/', ToDoList.getAllTodos)
 
 router.get('/:id', function (req, res) {
   ToDoList.getTodosById(req, res)

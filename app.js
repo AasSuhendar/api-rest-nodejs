@@ -3,14 +3,38 @@ var path = require('path')
 var cookieParser = require('cookie-parser')
 var bodyParser = require('body-parser')
 
-var mongooseConf = require('./helper/mongooseConf')
-var loggerFile = require('./config/logger')
+var mongooseConf = require('./apps/databases/mongooseConf')
+// var mysqlConf = require("./apps/databases/mysqlConf");
+// var sql = require("./apps/databases/sql");
+
+var loggerFile = require('./apps/config/logger')
 var index = require('./routes/index')
 var todos = require('./routes/todos')
 var upload = require('./routes/upload')
+var student = require('./routes/students')
 
 var app = express()
+
 var conDB = new mongooseConf(app)
+// var conDB = new mysqlConf(app)
+
+// sql.sync({force:'development'})
+
+// conDB.connect(function (err) {
+//   if (err) {
+//     console.log(err);
+//   }
+//   console.log(conDB.threadId);
+// })
+
+// conDB.query('SELECT * from students', function (error, results, fields) {
+//   if (error) throw error;
+//   results.forEach(element => {
+//     console.log(element);
+//   });
+// });
+
+// conDB.end();
 
 app.use(function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*')
@@ -25,6 +49,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use('/', index)
 app.use('/api/todo-list', todos)
 app.use('/api/upload', upload)
+app.use('/api/student', student)
 
 // catch 404 and forward to error handler
 app.use(function (req, res) {

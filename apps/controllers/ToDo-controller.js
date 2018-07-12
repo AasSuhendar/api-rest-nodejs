@@ -1,7 +1,6 @@
 var ToDo = require('../models/ToDo')
 
-module.exports = {
-  getAllTodos: (req, res) => {
+const getAllTodos = (req, res) => {
     ToDo.find({}, (err, todos) => {
       if (err) {
         res.status(500).json({
@@ -19,8 +18,9 @@ module.exports = {
         })
       }
     })
-  },
-  getTodosById: (req, res) => {
+  }
+
+  const getTodosById = (req, res) => {
     ToDo.findById(req.params.id, (err, todos) => {
       if (err) {
         res.status(500).json({
@@ -38,8 +38,9 @@ module.exports = {
         })
       }
     })
-  },
-  insertTodo: (req, res) => {
+  }
+
+  const insertTodo = (req, res) => {
     var todo = {
       name: req.body.name,
       description: req.body.description,
@@ -63,8 +64,9 @@ module.exports = {
         })
       }
     })
-  },
-  updateTodo: (req, res) => {
+  }
+
+  const updateTodo = (req, res) => {
     ToDo.findByIdAndUpdate(req.params.id, {
       $set: {
         name: req.body.name,
@@ -88,8 +90,9 @@ module.exports = {
         })
       }
     })
-  },
-  deleteTodo: (req, res) => {
+  }
+
+  const deleteTodo = (req, res) => {
     ToDo.remove({_id: req.params.id}, (err, todo) => {
       if (err) {
         res.status(500).json({
@@ -108,4 +111,12 @@ module.exports = {
       }
     })
   }
+
+
+module.exports = {
+  getAllTodos,
+  insertTodo,
+  getTodosById,
+  updateTodo,
+  deleteTodo
 }
