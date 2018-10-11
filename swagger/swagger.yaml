@@ -1,0 +1,112 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Sample Todo API
+# during dev, should point to your local machine
+host: localhost:3000
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: hello_world
+    get:
+      description: Returns JSON API to the caller
+      # used as the method name of the controller
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/RootBased"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+  
+  /api/todo-list:
+    x-swagger-router-controller: todos
+
+    get:
+      description: Returns list of all Todo
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/TodosResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse" 
+
+# complex objects have schema definitions
+definitions:
+
+  Todos:
+    properties:
+      _id:
+        type: string
+      name:
+        type: string
+      description:
+        type: string
+      status:
+        type: string
+      __v:
+        type: number
+      created_at:
+        type: string
+  
+  TodosResponse:
+    required:
+      - code
+      - status
+      - message
+      - data
+    properties:
+      code:
+        type: number
+      status:
+        type: boolean
+        default: true
+      message:
+        type: string
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/Todos"
+  
+  RootBased:
+    required:
+      - status
+      - codes
+      - message
+    properties:
+      status:
+        type: number
+      message:
+        type: string
+      codes:
+        type: number
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
